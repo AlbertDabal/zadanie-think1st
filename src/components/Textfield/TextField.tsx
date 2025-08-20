@@ -1,24 +1,27 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
+'use client';
+
 import { ErrorIcon } from '@/core/assets/ErrorIcon';
+import clsx from 'clsx';
+import { FC } from 'react';
 
 type TextFieldProps = {
   placeholder?: string;
-  value?: string;
   label: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: boolean;
   type?: 'text' | 'email';
+  name: string;
+  handleChange: (name: string, value: string | number | null) => void;
+  error?: boolean;
+  value: string;
 };
 
-//todo dodać walidacje meila
-
-export const TextField: FC<TextFieldProps> = ({ type, label, error }) => {
+export const TextField: FC<TextFieldProps> = ({ type, label, handleChange, name, error, value }) => {
   return (
     <div className="flex flex-col gap-[8px]">
       <label className="font-regular leading-none">{label}</label>
       <input
+        onChange={(e) => handleChange(name, e.target.value)}
         type={type || 'text'}
+        value={value}
         className={clsx(
           'h-[48px] rounded-lg px-[18px] py-[16px] outline-1 outline-[#CBB6E5] focus:outline-2',
           error

@@ -2,11 +2,16 @@
 
 import { fetchNationalHoliday } from '@/core/api/fetchNationalHoliday';
 import { fetchObservance } from '@/core/api/fetchObservance';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { DataPicker } from '../DataPicker';
 import { TimeSlots } from '../TimeSlots';
 
-export const DateTimePicker = () => {
+export type DateTimePickerProps = {
+  dateName: string;
+  timeName: string;
+};
+
+export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName }) => {
   const [isClient, setIsClient] = useState(false);
 
   const [date, setDate] = useState<Date | null>(new Date());

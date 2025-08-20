@@ -1,29 +1,39 @@
 'use client';
 
 import { DelateIcon } from '@/core/assets/DelateIcon';
-import React, { useRef, useState } from 'react';
+import { ChangeEvent, DragEvent, FC, MouseEvent, useRef } from 'react';
 
-export const InputFile = () => {
-  const [files, setFiles] = useState([]);
-  const inputRef = useRef(null);
+export type InputFileProps = {
+  name: string;
+  files: File[] | [];
+  handleChange: (name: string, value: File[]) => void;
+};
 
-  const handleDrop = (e) => {
+export const InputFile: FC<InputFileProps> = ({ name, files, handleChange }) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) setFiles([droppedFile]);
+    if (droppedFile) handleChange(name, [droppedFile]);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  const handleFileSelect = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) setFiles([selectedFile]);
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) handleChange(name, [selectedFile]);
   };
 
   const handleClick = () => {
-    inputRef.current.click();
+    inputRef.current?.click();
+  };
+
+  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    handleChange(name, []);
   };
 
   return (
@@ -53,7 +63,7 @@ export const InputFile = () => {
           {files.map((file, index) => (
             <div className="flex items-center gap-[5px]" key={index}>
               <div key={index}>{file.name}</div>
-              <button onClick={() => setFiles([])}>
+              <button onClick={handleDelete}>
                 <DelateIcon />
               </button>
             </div>
