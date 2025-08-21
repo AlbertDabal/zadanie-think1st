@@ -5,8 +5,18 @@ export const useFormValidation = (formData: FormData, errors: FormErrors) => {
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    const hasEmptyFields = Object.values(formData).some((value) => value === '' || value === null);
+    // Check for empty fields or null values
+    const hasEmptyFields = Object.entries(formData).some(([key, value]) => {
+      // Special check for 'file' field
+      if (key === 'file' && Array.isArray(value)) {
+        return value.length === 0; // invalid if no files
+      }
+      return value === '' || value === null;
+    });
+
+    // Check if there are any validation errors
     const hasErrors = Object.values(errors).some(Boolean);
+
     setIsValid(!hasEmptyFields && !hasErrors);
   }, [formData, errors]);
 
