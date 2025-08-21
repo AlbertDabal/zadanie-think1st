@@ -37,15 +37,11 @@ export const FormPersonalInfo = () => {
       setErrors((prev) => ({ ...prev, email: !validateEmail(value as string) }));
     }
 
-    console.log('value', value);
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-
-  console.log('formData', formData);
 
   const handleSubmit = () => {
     const payload: FormDataSend = {
@@ -87,7 +83,7 @@ export const FormPersonalInfo = () => {
       />
 
       <div className="pt-[32px]">
-        <CTA disabled={isFormValid} handleSubmit={handleSubmit} />
+        <CTA disabled={!isFormValid} handleSubmit={handleSubmit} />
       </div>
     </>
   );
