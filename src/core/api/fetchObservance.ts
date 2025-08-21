@@ -1,4 +1,6 @@
-export const fetchObservance = async (): Promise<string | null> => {
+import { Holiday } from '../types/holiday';
+
+export const fetchObservance = async (): Promise<Holiday[]> => {
   try {
     const res = await fetch(`https://api.api-ninjas.com/v1/holidays?country=PL&type=OBSERVANCE`, {
       method: 'GET',
@@ -15,6 +17,6 @@ export const fetchObservance = async (): Promise<string | null> => {
     return data;
   } catch (error) {
     console.error(`Error fetching API /:`);
-    return null;
+    return [];
   }
 };

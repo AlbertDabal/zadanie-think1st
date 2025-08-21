@@ -10,7 +10,7 @@ import { FC } from 'react';
 
 export type DatePickerProps = {
   dayClassName?: (date: Date) => string;
-  foundObservanceDate: { name: string };
+  foundObservanceDate: { date: string; name: string } | null;
   handleChange: (name: string, value: Date | null) => void;
   value: Date | null;
   name: string;
