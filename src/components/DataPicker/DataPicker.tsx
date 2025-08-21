@@ -6,14 +6,28 @@ import { ErrorIcon } from '@/core/assets/ErrorIcon';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './custom-datepicker.css';
+import { FC } from 'react';
 
-export const DataPicker = ({ date, setDate, dayClassName, foundObservanceDate }) => {
+export type DatePickerProps = {
+  dayClassName?: (date: Date) => string;
+  foundObservanceDate: { name: string };
+  handleChange: (name: string, value: Date | null) => void;
+  value: Date | null;
+  name: string;
+};
+
+export const DataPicker: FC<DatePickerProps> = ({ dayClassName, foundObservanceDate, handleChange, value, name }) => {
+  //NAPRAWIC DATE PICKER DOMYSLNIE JEST DATA I PRZY ZMIANIE MIESIACA
+  // TEZ ZMIENIA SIE DZIEN A NIE ZAPISUJE SIE DO STANU
+
   return (
     <div className="">
       <p className="pb-[8px] leading-none">Date</p>
       <DatePicker
-        selected={date}
-        onChange={(d) => setDate(d)}
+        selected={value}
+        onChange={(d) => {
+          handleChange(name, d);
+        }}
         calendarStartDay={1}
         inline
         dayClassName={dayClassName}

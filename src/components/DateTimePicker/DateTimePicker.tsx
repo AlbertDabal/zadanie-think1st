@@ -2,19 +2,22 @@
 
 import { fetchNationalHoliday } from '@/core/api/fetchNationalHoliday';
 import { fetchObservance } from '@/core/api/fetchObservance';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { DataPicker } from '../DataPicker';
 import { TimeSlots } from '../TimeSlots';
+import { toYYYYMMDD } from '@/core/utils/toYYMMDD';
 
 export type DateTimePickerProps = {
   dateName: string;
   timeName: string;
+  dateValue: string;
+  timeValue: string;
+  handleChange: (name: string, value: string) => void;
 };
 
-export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName }) => {
+export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, dateValue, timeValue, handleChange }) => {
   const [isClient, setIsClient] = useState(false);
 
-  const [date, setDate] = useState<Date | null>(new Date());
   const [id, setId] = useState(null);
 
   const [dataObservance, setDataObservance] = useState(null);
@@ -26,7 +29,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName }) 
 
   useEffect(() => {
     setId(null);
-  }, [date]);
+  }, [dateValue]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,21 +68,37 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName }) 
     return isSpecial ? 'custom-highlight' : undefined;
   };
 
-  const toYYYYMMDD = (d: Date) => d.toISOString().split('T')[0];
-
-  const foundBlockDate = blockDates.find((item) => item === toYYYYMMDD(date));
+  const foundBlockDate = blockDates.find((item) => item === toYYYYMMDD(dateValue));
 
   const isBlockDate = !!foundBlockDate;
 
-  const foundObservanceDate = datesName.find((item) => item.date === toYYYYMMDD(date));
+  console.log('datesName', datesName);
+
+  // const foundObservanceDate = datesName.find((item) => item.date === toYYYYMMDD(dateValue));
+
+  const foundObservanceDate = useMemo(() => {
+    if (!dateValue) return null;
+
+    const normalized = toYYYYMMDD(dateValue);
+
+    return datesName.find((item) => item.date === normalized) ?? null;
+  }, [dateValue]);
 
   if (!isClient) return null;
 
   if (!dataObservance || !dataNationalHoliday) return <div>Loading...</div>;
 
+  console.log('dayClassName', dayClassName);
+
   return (
     <div className="flex flex-col gap-[24px] sm:flex-row">
-      <DataPicker date={date} setDate={setDate} dayClassName={dayClassName} foundObservanceDate={foundObservanceDate} />
+      <DataPicker
+        name={dateName}
+        dayClassName={dayClassName}
+        foundObservanceDate={foundObservanceDate}
+        value={dateValue}
+        handleChange={handleChange}
+      />
       {isBlockDate ? null : <TimeSlots id={id} setId={setId} />}
     </div>
   );

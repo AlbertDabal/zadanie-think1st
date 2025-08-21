@@ -9,6 +9,7 @@ import { SliderRange } from '../SliderRange';
 import { InputFile } from '../InputFile';
 import { DateTimePicker } from '../DateTimePicker';
 import { CTA } from '../CTA';
+import { toYYYYMMDD } from '@/core/utils/toYYMMDD';
 
 export const FormPersonalInfo = () => {
   const defaultValue: FormData = {
@@ -34,6 +35,8 @@ export const FormPersonalInfo = () => {
       setErrors((prev) => ({ ...prev, email: !validateEmail(value as string) }));
     }
 
+    console.log('value', value);
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -43,6 +46,12 @@ export const FormPersonalInfo = () => {
   console.log('formData', formData);
 
   const handleSubmit = () => {
+    const payload = {
+      ...formData,
+      date: toYYYYMMDD(formData.date),
+      time: formData.time, // tu też można dodać konwersję np. HH:mm
+    };
+
     setFormData(defaultValue);
     setErrors(defaultErrors);
   };
@@ -66,7 +75,13 @@ export const FormPersonalInfo = () => {
       </div>
       <h1 className="pb-[32px] text-2xl leading-none font-medium">Your workout</h1>
 
-      <DateTimePicker dateName="date" timeName="time" />
+      <DateTimePicker
+        dateName="date"
+        timeName="time"
+        dateValue={formData.date}
+        timeValue={formData.time}
+        handleChange={handleInputChange}
+      />
 
       <div className="pt-[32px]">
         <CTA disabled={isFormValid} handleSubmit={handleSubmit} />
