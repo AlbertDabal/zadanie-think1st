@@ -12,13 +12,13 @@ export type DateTimePickerProps = {
   dateName: string;
   timeName: string;
   dateValue: Date | null;
-  timeValue: string;
-  handleChange: (name: string, value: string | Date | null) => void;
+  timeValue: number;
+  handleChange: (name: string, value: string | Date | null | number) => void;
 };
 
 export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, dateValue, timeValue, handleChange }) => {
   const [isClient, setIsClient] = useState(false);
-  const [id, setId] = useState(null);
+
   const [dataObservance, setDataObservance] = useState<Holiday[]>([]);
   const [dataNationalHoliday, setDataNationalHoliday] = useState<Holiday[]>([]);
 
@@ -27,7 +27,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
   }, []);
 
   useEffect(() => {
-    setId(null);
+    handleChange(timeName, null);
   }, [dateValue]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
         value={dateValue}
         handleChange={handleChange}
       />
-      {isBlockDate ? null : <TimeSlots id={id} setId={setId} />}
+      {isBlockDate ? null : <TimeSlots value={timeValue} handleChange={handleChange} name={timeName} />}
     </div>
   );
 };
