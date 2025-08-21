@@ -10,6 +10,8 @@ import { InputFile } from '../InputFile';
 import { DateTimePicker } from '../DateTimePicker';
 import { CTA } from '../CTA';
 import { toYYYYMMDD } from '@/core/utils/toYYMMDD';
+import { sendPersonalInfo } from '@/core/api/sendPersonalInfo';
+import { FormDataSend } from '@/core/types/formDataSend';
 
 export const FormPersonalInfo = () => {
   const defaultValue: FormData = {
@@ -18,7 +20,7 @@ export const FormPersonalInfo = () => {
     email: '',
     age: 8,
     date: new Date(),
-    time: null,
+    time: '',
     file: [],
   };
 
@@ -46,11 +48,12 @@ export const FormPersonalInfo = () => {
   console.log('formData', formData);
 
   const handleSubmit = () => {
-    const payload = {
+    const payload: FormDataSend = {
       ...formData,
       date: toYYYYMMDD(formData.date),
-      time: formData.time, // tu też można dodać konwersję np. HH:mm
     };
+
+    sendPersonalInfo(payload);
 
     setFormData(defaultValue);
     setErrors(defaultErrors);
@@ -84,7 +87,7 @@ export const FormPersonalInfo = () => {
       />
 
       <div className="pt-[32px]">
-        <CTA disabled={!isFormValid} handleSubmit={handleSubmit} />
+        <CTA disabled={isFormValid} handleSubmit={handleSubmit} />
       </div>
     </>
   );

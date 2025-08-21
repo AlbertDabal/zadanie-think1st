@@ -1,8 +1,8 @@
 'use client';
 
 import { FC, useEffect, useMemo, useState } from 'react';
-import { DataPicker } from '../DataPicker';
-import { TimeSlots } from '../TimeSlots';
+import { DataPicker } from './subcomponets/DataPicker';
+import { TimeSlots } from './subcomponets/TimeSlots';
 import { toYYYYMMDD } from '@/core/utils/toYYMMDD';
 import { createDayClassName } from './utils/createDayClassName';
 import { useHolidays } from './hooks/useHolidays';
@@ -20,7 +20,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
   const { dataObservance, dataNationalHoliday, allHolidays, loading } = useHolidays();
 
   useEffect(() => setIsClient(true), []);
-  useEffect(() => handleChange(timeName, null), [dateValue]);
+  useEffect(() => handleChange(timeName, ''), [dateValue]);
 
   const dayClassName = useMemo(() => createDayClassName(allHolidays), [allHolidays]);
 

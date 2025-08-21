@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { FC } from 'react';
 
 export type TimeSlotsProps = {
-  value: string;
+  value: string | null;
   name: string;
   handleChange: (name: string, value: string | Date | null | number) => void;
 };
