@@ -19,7 +19,7 @@ export type DatePickerProps = {
 export const DataPicker: FC<DatePickerProps> = ({ dayClassName, foundObservanceDate, handleChange, value, name }) => {
   return (
     <div className="">
-      <p className="pb-[8px] leading-none">Date</p>
+      <p className="pb-2 leading-none">Date</p>
       <DatePicker
         selected={value}
         onChange={(date) => handleChange(name, date)}
@@ -46,9 +46,9 @@ export const DataPicker: FC<DatePickerProps> = ({ dayClassName, foundObservanceD
         )}
       />
       {foundObservanceDate && (
-        <div className="flex items-center gap-[8px]">
+        <div className="flex items-center gap-2">
           <ErrorIcon color="#CBB6E5" />
-          <p className="text-[14px]">{foundObservanceDate.name}</p>
+          <p className="text-sm">{foundObservanceDate.name}</p>
         </div>
       )}
     </div>

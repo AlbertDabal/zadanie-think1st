@@ -38,11 +38,11 @@ export const InputFile: FC<InputFileProps> = ({ name, files, handleChange }) => 
 
   return (
     <div>
-      <p className="pb-[8px] leading-none">Photo</p>
+      <p className="pb-2 leading-none">Photo</p>
 
       {files.length === 0 ? (
         <div
-          className="flex cursor-pointer items-center justify-center rounded-[8px] border-1 border-[#CBB6E5] bg-white py-[40px] text-center hover:bg-gray-100"
+          className="flex cursor-pointer items-center justify-center rounded-[8px] border-1 border-[#CBB6E5] bg-white py-10 text-center hover:bg-gray-100"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={handleClick}
@@ -55,13 +55,13 @@ export const InputFile: FC<InputFileProps> = ({ name, files, handleChange }) => 
         </div>
       ) : (
         <div
-          className="flex cursor-pointer items-center justify-center rounded-[8px] border-1 border-[#CBB6E5] bg-white py-[40px] text-center hover:bg-gray-100"
+          className="flex cursor-pointer items-center justify-center rounded-lg border-1 border-[#CBB6E5] bg-white py-10 text-center hover:bg-gray-100"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={handleClick}
         >
           {files.map((file, index) => (
-            <div className="flex items-center gap-[5px]" key={index}>
+            <div className="flex items-center gap-1" key={index}>
               <div key={index}>{file.name}</div>
               <button onClick={handleDelete}>
                 <DelateIcon />

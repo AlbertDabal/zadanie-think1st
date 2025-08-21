@@ -20,13 +20,13 @@ export const TimeSlots: FC<TimeSlotsProps> = ({ value, handleChange, name }) => 
 
   return (
     <div>
-      <p className="pb-[8px] leading-none">Time</p>
-      <div className="flex flex-row flex-wrap gap-[8px] pb-[10px] sm:flex-col">
+      <p className="pb-2 leading-none">Time</p>
+      <div className="flex flex-row flex-wrap gap-2 pb-[10px] sm:flex-col">
         {data.map((slot) => (
           <div
             key={slot.id}
             className={clsx(
-              'flex h-[46px] w-[76px] cursor-pointer items-center justify-center rounded-[8px] bg-white select-none',
+              'flex h-[46px] w-[76px] cursor-pointer items-center justify-center rounded-lg bg-white select-none',
               value === slot.time ? 'outline-2 outline-[#761BE4]' : 'outline-1 outline-[#CBB6E5]',
             )}
             onClick={() => handleChange(name, slot.time)}

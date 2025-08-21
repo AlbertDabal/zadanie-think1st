@@ -123,8 +123,8 @@
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
-  background-color: white !important; /* nowy kolor tła */
-  color: rgb(0, 0, 0) !important; /* nowy kolor tekstu */
+  background-color: white !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 .react-datepicker__day--selected,

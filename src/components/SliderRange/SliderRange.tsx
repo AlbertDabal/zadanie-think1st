@@ -48,7 +48,7 @@ export const SliderRange: FC<SliderRangeProps> = ({ name, value, handleChange, m
     <div className="flex w-full flex-col gap-0 pb-10">
       <p>Age</p>
       <div className="relative mt-4 select-none">
-        <div className="absolute bottom-[16px] flex w-full items-center justify-between pl-[4px] text-xs">
+        <div className="absolute bottom-4 flex w-full items-center justify-between pl-1 text-xs">
           <span>{min}</span>
           <span>{max}</span>
         </div>
