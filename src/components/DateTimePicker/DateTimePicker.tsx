@@ -26,6 +26,11 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
 
   const blockDates = useMemo(() => allHolidays.map((item) => item.date), [allHolidays]);
 
+  const isSunday = useMemo(() => {
+    if (!dateValue) return false;
+    return new Date(dateValue).getDay() === 0;
+  }, [dateValue]);
+
   const isBlockDate = dateValue ? blockDates.includes(toYYYYMMDD(dateValue) ?? '') : false;
 
   const foundObservanceDate = useMemo(() => {
@@ -45,7 +50,10 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
         value={dateValue}
         handleChange={handleChange}
       />
-      {!isBlockDate && <TimeSlots value={timeValue} handleChange={handleChange} name={timeName} />}
+
+      {!isBlockDate && dateValue !== null && !isSunday && (
+        <TimeSlots value={timeValue} handleChange={handleChange} name={timeName} />
+      )}
     </div>
   );
 };

@@ -19,7 +19,7 @@ export const FormPersonalInfo = () => {
     lastName: '',
     email: '',
     age: 8,
-    date: new Date(),
+    date: null,
     time: '',
     file: [],
   };

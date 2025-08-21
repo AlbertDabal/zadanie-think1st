@@ -3,10 +3,10 @@
 import { ArrowLeft } from '@/core/assets/ArrowLeft';
 import { ArrowRight } from '@/core/assets/ArrowRight';
 import { ErrorIcon } from '@/core/assets/ErrorIcon';
+import { FC } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './custom-datepicker.css';
-import { FC } from 'react';
 
 export type DatePickerProps = {
   dayClassName?: (date: Date) => string;
@@ -17,17 +17,12 @@ export type DatePickerProps = {
 };
 
 export const DataPicker: FC<DatePickerProps> = ({ dayClassName, foundObservanceDate, handleChange, value, name }) => {
-  //NAPRAWIC DATE PICKER DOMYSLNIE JEST DATA I PRZY ZMIANIE MIESIACA
-  // TEZ ZMIENIA SIE DZIEN A NIE ZAPISUJE SIE DO STANU
-
   return (
     <div className="">
       <p className="pb-[8px] leading-none">Date</p>
       <DatePicker
         selected={value}
-        onChange={(d) => {
-          handleChange(name, d);
-        }}
+        onChange={(date) => handleChange(name, date)}
         calendarStartDay={1}
         inline
         dayClassName={dayClassName}
