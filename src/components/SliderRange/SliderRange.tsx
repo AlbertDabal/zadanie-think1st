@@ -42,6 +42,8 @@ export const SliderRange: FC<SliderRangeProps> = ({ name, value, handleChange, m
     setTooltipReady(true);
   }, [value, updateTooltipPosition]);
 
+  const percent = ((value - min) / (max - min)) * 100;
+
   return (
     <div className="flex w-full flex-col gap-0 pb-10">
       <p>Age</p>
@@ -59,7 +61,10 @@ export const SliderRange: FC<SliderRangeProps> = ({ name, value, handleChange, m
           step={step}
           value={value}
           onInput={handleInput}
-          className="h-1 w-[calc(100%-4px)] cursor-pointer appearance-none rounded-lg bg-[#cbb6e5] [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#761be4]"
+          className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-[#cbb6e5] [&::-moz-range-progress]:bg-[#761BE4] [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#761BE4] [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#761BE4]"
+          style={{
+            background: `linear-gradient(to right, #761BE4 0%, #761BE4 ${percent}%, #CBB6E5 ${percent}%, #CBB6E5 100%)`,
+          }}
         />
 
         {tooltipReady && (
