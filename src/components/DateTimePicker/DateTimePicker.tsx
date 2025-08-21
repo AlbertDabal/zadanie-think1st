@@ -1,101 +1,43 @@
 'use client';
 
-import { fetchNationalHoliday } from '@/core/api/fetchNationalHoliday';
-import { fetchObservance } from '@/core/api/fetchObservance';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { DataPicker } from '../DataPicker';
 import { TimeSlots } from '../TimeSlots';
 import { toYYYYMMDD } from '@/core/utils/toYYMMDD';
-import { Holiday } from '@/core/types/holiday';
+import { createDayClassName } from './utils/createDayClassName';
+import { useHolidays } from './hooks/useHolidays';
 
 export type DateTimePickerProps = {
   dateName: string;
   timeName: string;
   dateValue: Date | null;
-  timeValue: number;
+  timeValue: string | null;
   handleChange: (name: string, value: string | Date | null | number) => void;
 };
 
 export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, dateValue, timeValue, handleChange }) => {
   const [isClient, setIsClient] = useState(false);
+  const { dataObservance, dataNationalHoliday, allHolidays, loading } = useHolidays();
 
-  const [dataObservance, setDataObservance] = useState<Holiday[]>([]);
-  const [dataNationalHoliday, setDataNationalHoliday] = useState<Holiday[]>([]);
+  useEffect(() => setIsClient(true), []);
+  useEffect(() => handleChange(timeName, null), [dateValue]);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const dayClassName = useMemo(() => createDayClassName(allHolidays), [allHolidays]);
 
-  useEffect(() => {
-    handleChange(timeName, null);
-  }, [dateValue]);
+  const blockDates = useMemo(() => allHolidays.map((item) => item.date), [allHolidays]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [observanceRes, holidayRes] = await Promise.all([fetchObservance(), fetchNationalHoliday()]);
-
-        setDataObservance(observanceRes);
-        setDataNationalHoliday(holidayRes);
-      } catch (err) {
-        console.error('Błąd podczas pobierania:', err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const datesObservance = useMemo(() => dataObservance?.map((item) => new Date(item.date)) ?? [], [dataObservance]);
-  const datesNationalHoliday = useMemo(
-    () => dataNationalHoliday?.map((item) => new Date(item.date)) ?? [],
-    [dataNationalHoliday],
-  );
-
-  const datesName = useMemo(
-    () =>
-      dataObservance?.map((item) => ({
-        date: item.date,
-        name: item.name,
-      })) ?? [],
-    [dataObservance],
-  );
-
-  const blockDates = useMemo(
-    () => [...(dataObservance ?? []), ...(dataNationalHoliday ?? [])].map((item) => item.date),
-    [dataObservance, dataNationalHoliday],
-  );
-
-  const specialDays = useMemo(
-    () => [...datesObservance, ...datesNationalHoliday],
-    [datesObservance, datesNationalHoliday],
-  );
-
-  const dayClassName = (d: Date) => {
-    const isSpecial =
-      d.getDay() === 0 || // niedziele
-      specialDays.some(
-        (sd) => sd.getFullYear() === d.getFullYear() && sd.getMonth() === d.getMonth() && sd.getDate() === d.getDate(),
-      );
-
-    return isSpecial ? 'custom-highlight' : '';
-  };
-
-  const foundBlockDate = blockDates.find((item) => item === toYYYYMMDD(dateValue));
-
-  const isBlockDate = !!foundBlockDate;
+  const isBlockDate = dateValue ? blockDates.includes(toYYYYMMDD(dateValue) ?? '') : false;
 
   const foundObservanceDate = useMemo(() => {
     if (!dateValue) return null;
     const normalized = toYYYYMMDD(dateValue);
-    return datesName.find((item) => item.date === normalized) ?? null;
-  }, [dateValue, datesName]);
+    return dataObservance.concat(dataNationalHoliday).find((item) => item.date === normalized) ?? null;
+  }, [dateValue, dataObservance, dataNationalHoliday]);
 
-  if (!isClient) return null;
-
-  if (!dataObservance || !dataNationalHoliday) return <div>Loading...</div>;
+  if (!isClient || loading) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col gap-[24px] sm:flex-row">
+    <div className="flex flex-col gap-6 sm:flex-row">
       <DataPicker
         name={dateName}
         dayClassName={dayClassName}
@@ -103,7 +45,7 @@ export const DateTimePicker: FC<DateTimePickerProps> = ({ dateName, timeName, da
         value={dateValue}
         handleChange={handleChange}
       />
-      {isBlockDate ? null : <TimeSlots value={timeValue} handleChange={handleChange} name={timeName} />}
+      {!isBlockDate && <TimeSlots value={timeValue} handleChange={handleChange} name={timeName} />}
     </div>
   );
 };

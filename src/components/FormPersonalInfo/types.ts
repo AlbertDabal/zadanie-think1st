@@ -4,7 +4,7 @@ export type FormData = {
   email: string;
   age: number;
   date: Date | null;
-  time: Date | null;
+  time: string | null;
   file: File[] | [];
 };
 

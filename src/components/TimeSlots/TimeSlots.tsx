@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { FC } from 'react';
 
 export type TimeSlotsProps = {
-  value: number;
+  value: string;
   name: string;
   handleChange: (name: string, value: string | Date | null | number) => void;
 };
@@ -27,9 +27,9 @@ export const TimeSlots: FC<TimeSlotsProps> = ({ value, handleChange, name }) => 
             key={slot.id}
             className={clsx(
               'flex h-[46px] w-[76px] cursor-pointer items-center justify-center rounded-[8px] bg-white select-none',
-              value === slot.id ? 'outline-2 outline-[#761BE4]' : 'outline-1 outline-[#CBB6E5]',
+              value === slot.time ? 'outline-2 outline-[#761BE4]' : 'outline-1 outline-[#CBB6E5]',
             )}
-            onClick={() => handleChange(name, slot.id)}
+            onClick={() => handleChange(name, slot.time)}
           >
             <span>{slot.time}</span>
           </div>

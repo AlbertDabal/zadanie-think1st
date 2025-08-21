@@ -17,7 +17,7 @@ export const FormPersonalInfo = () => {
     lastName: '',
     email: '',
     age: 8,
-    date: null,
+    date: new Date(),
     time: null,
     file: [],
   };
@@ -30,7 +30,7 @@ export const FormPersonalInfo = () => {
   const [formData, setFormData] = useState(defaultValue);
   const isFormValid = useFormValidation(formData, errors);
 
-  const handleInputChange = (name: string, value: string | number | null | File[]) => {
+  const handleInputChange = (name: string, value: string | number | null | File[] | Date) => {
     if (name === 'email') {
       setErrors((prev) => ({ ...prev, email: !validateEmail(value as string) }));
     }
@@ -84,7 +84,7 @@ export const FormPersonalInfo = () => {
       />
 
       <div className="pt-[32px]">
-        <CTA disabled={isFormValid} handleSubmit={handleSubmit} />
+        <CTA disabled={!isFormValid} handleSubmit={handleSubmit} />
       </div>
     </>
   );
